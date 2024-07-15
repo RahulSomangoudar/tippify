@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+}
+
+aside {
+    background-color: #f4f4f4;
+    width: 200px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+aside nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside nav ul li {
+    margin-bottom: 10px;
+}
+
+aside nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+aside nav ul li a:hover {
+    color: #007BFF;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Restaurant Dashboard</h1>
+        <span>Hello,</span>
+    </header>
+    <div class="main">
+        <aside>
+            <nav>
+                <ul>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/add-waiter">Add Waiters</a></li>
+                    <li><a href="/view-waiters">View Waiters</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <section class="content">
+            <!-- Main content goes here -->
+        </section>
+    </div>
+</body>
+</html>

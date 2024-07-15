@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Waiter</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .header-left h1 {
+    margin: 0;
+}
+
+header .header-right {
+    margin-left: auto;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+}
+
+aside {
+    background-color: #f4f4f4;
+    width: 200px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+aside nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside nav ul li {
+    margin-bottom: 10px;
+}
+
+aside nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+aside nav ul li a:hover {
+    color: #007BFF;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <%- include('partials/header') %>
+    <div class="main">
+        <%- include('partials/sidebar') %>
+        <section class="content">
+            <div class="container">
+                <h2>Add Waiter</h2>
+                <form action="/add-waiter" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter waiter's name" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="upiId">UPI ID:</label>
+                        <input type="text" id="upiId" name="upiId" placeholder="Enter UPI ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image:</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Add Waiter</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
