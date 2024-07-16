@@ -76,7 +76,6 @@
             transform: scale(1.05);
         }
 
-        /* Responsive styles */
         @media (max-width: 1000px) {
             .container {
                 grid-template-columns: repeat(2, 1fr);
@@ -92,22 +91,24 @@
 </head>
 
 <body>
-    <h1>Make a Payment</h1>
+    <h1>Waiter List</h1>
     <div class="container">
         <% waiters.forEach(waiter => { %>
-        <div class="card" data-upi="upi://pay?pa=7204235830@ybl&pn=<%= waiter.name %>&am=100&cu=INR">
-            <img src="images/<%= waiter.image %>" alt="<%= waiter.name %>">
-            <h2><%= waiter.name %></h2>
-            <button class="payment-button" onclick="redirectToUPI(this)">Pay Now</button>
-        </div>
-        <% }) %>
+            <div class="card">
+                <img src="/uploads/<%= waiter.image %>" alt="<%= waiter.name %>">
+                <h2><%= waiter.name %></h2>
+                <p>UPI ID: <%= waiter.upiId %></p>
+                <button class="payment-button" data-upi="<%= waiter.upiId %>">Pay Now</button>
+            </div>
+        <% }); %>
     </div>
-
     <script>
-        function redirectToUPI(button) {
-            const upiLink = button.closest('.card').getAttribute('data-upi');
-            window.location.href = upiLink;
-        }
+        document.querySelectorAll('.payment-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const upiId = button.getAttribute('data-upi');
+                window.location.href = `upi://pay?pa=${upiId}&pn=Waiter&cu=INR`;
+            });
+        });
     </script>
 </body>
 
