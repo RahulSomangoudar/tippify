@@ -13,6 +13,11 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background: url('https://t3.ftcdn.net/jpg/03/44/52/88/360_F_344528805_o1LwyPDkkDZ7TEbTE5J08e9m00ZifmGK.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -34,7 +39,7 @@
         }
 
         aside {
-            background-color: #f4f4f4;
+            background-color: #2b2b2b;
             width: 200px;
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -42,20 +47,23 @@
 
         aside nav ul {
             list-style: none;
-            padding: 0;
+            padding: 10px;
+            margin: 10px;
         }
 
         aside nav ul li {
-            margin-bottom: 10px;
+            margin-bottom: 30px;
         }
 
         aside nav ul li a {
             text-decoration: none;
-            color: #333;
+            color: white;
+            padding: 10px;
         }
 
         aside nav ul li a:hover {
-            color: #007BFF;
+            background-color: rgb(162, 104, 255);
+            border-radius: 5px;
         }
 
         .content {
@@ -66,23 +74,9 @@
 </head>
 
 <body>
-    <header>
-        <h1>Restaurant Dashboard</h1>
-        <div>
-            <span>Hello, User!</span>
-        </div>
-    </header>
+    <%- include('partials/header') %>
     <div class="main">
-        <aside>
-            <nav>
-                <ul>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/add-waiter">Add Waiter</a></li>
-                    <li><a href="/view-waiters">View Waiters</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-            </nav>
-        </aside>
+        <%- include('partials/sidebar') %>
         <div class="content">
             <h2>Welcome to your dashboard!</h2>
             <p>Use the navigation links on the left to manage your restaurant's waiters.</p>

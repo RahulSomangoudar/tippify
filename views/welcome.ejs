@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Tippify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: url('https://t3.ftcdn.net/jpg/03/44/52/88/360_F_344528805_o1LwyPDkkDZ7TEbTE5J08e9m00ZifmGK.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: rgb(162, 104, 255);
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2em;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            opacity: 0.7;
+        }
+
+        .welcome-container {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .welcome-container h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            margin: 0 10px;
+            font-size: 1.2em;
+            text-decoration: none;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-signup {
+            background-color: rgb(162, 104, 255);
+        }
+
+        .btn-signup:hover {
+            background-color: rgb(126, 84, 255);
+        }
+
+        .btn-login {
+            background-color: rgb(162, 104, 255);
+        }
+
+        .btn-login:hover {
+            background-color: rgb(126, 84, 255);
+        }
+         
+        div a{
+            text-decoration: none;
+            color: #fff;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-brand"><a href="/">Tippify</a></div>
+        <div class="navbar-links">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+    </div>
+    <div class="welcome-container">
+        <h1>Welcome to Tippify</h1>
+        <h3 style="margin-top: 20px;">Discover a new way to appreciate service.</h3>
+        <div class="btn-group">
+            <a href="/signup" class="btn btn-signup">Sign Up</a>
+            <a href="/login" class="btn btn-login">Login</a>
+        </div>
+    </div>
+</body>
+
+</html>

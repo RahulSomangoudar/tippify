@@ -1,12 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="/style.css">
     <style>
-        /* Add the provided CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: url('https://t3.ftcdn.net/jpg/03/44/52/88/360_F_344528805_o1LwyPDkkDZ7TEbTE5J08e9m00ZifmGK.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: rgb(162, 104, 255);
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2em;
+            transition: opacity 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            opacity: 0.7;
+        }
+
         .form_main {
             width: 420px;
             height: 350px;
@@ -19,6 +62,8 @@
             position: relative;
             overflow: hidden;
             border-radius: 10px;
+            margin: 20px auto;
+            margin-top: 80px;
         }
 
         .form_main::before {
@@ -33,6 +78,7 @@
             z-index: 1;
             border-radius: 30px;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.082);
+            
         }
 
         .heading {
@@ -110,9 +156,27 @@
             padding: 8px 15px;
             border-radius: 20px;
         }
+        div .navbar-brand a{
+            text-decoration: none;
+            color: #fff;
+        }
+        div a{
+            text-decoration: none;
+        }
     </style>
 </head>
+
 <body>
+    <div class="navbar">
+        <div class="navbar-brand"><a href="/">Tippify</a></div>
+        <div class="navbar-links">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+    </div>
+
     <div class="form_main">
         <h2 class="heading">Login</h2>
         <form action="/login" method="post">
@@ -127,4 +191,5 @@
         <p>Don't have an account? <a href="/signup">Signup</a></p>
     </div>
 </body>
+
 </html>

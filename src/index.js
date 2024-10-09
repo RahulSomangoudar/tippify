@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
-const { User, Waiter } = require('./config'); // Import User and Waiter from config
+const { User, Waiter } = require('./config');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const QRCode = require('qrcode');
@@ -12,7 +12,7 @@ const app = express();
 
 // Session middleware
 app.use(session({
-    secret: 'your-secret-key', // Replace with a strong secret key
+    secret: '2003', // Replace with a strong secret key
     resave: false,
     saveUninitialized: true,
 }));
@@ -36,9 +36,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
-
 app.get('/', (req, res) => {
-    res.render('login');
+    res.render('welcome');
 });
 
 app.get('/login', (req, res) => {
@@ -49,13 +48,21 @@ app.get('/signup', (req, res) => {
     res.render('signup');
 });
 
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
+
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+
+
 // Register user
 app.post('/signup', async (req, res) => {
     const { username, password } = req.body;
 
     try {
         const existingUser = await User.findOne({ name: username });
-
         if (existingUser) {
             return res.send('User already exists. Please choose a different username');
         }
@@ -63,17 +70,23 @@ app.post('/signup', async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Generate QR code
-        const qrCodePath = `/profile/${username}-qr.png`;
-        await QRCode.toFile(path.join(__dirname, '../public', qrCodePath), `http://yourdomain.com/profile/${username}`);
-
-        await User.create({
+        const newUser = await User.create({
             name: username,
             password: hashedPassword,
-            qrCodePath: qrCodePath, // Store QR code path in user document
         });
 
-        res.redirect('/login'); // Redirect to login page after successful signup
+        //Generate qr code
+        const qrCodePath = `/profile/${username}-qr.png`;
+        const localIPAddress = 'http://192.168.154.75:5000';
+        await QRCode.toFile(
+            path.join(__dirname, '../public', qrCodePath),
+            `${localIPAddress}/waiters?ownerId=${newUser._id}`
+        );
+
+        newUser.qrCodePath = qrCodePath;
+        await newUser.save();
+
+        res.redirect('/login');
     } catch (error) {
         console.error('Error creating user:', error);
         res.status(500).send('Failed to create user.');
@@ -94,9 +107,8 @@ app.post('/login', async (req, res) => {
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (isPasswordMatch) {
-            // Store user info in session
             req.session.user = user;
-            res.redirect('/dashboard'); // Redirect to profile page
+            res.redirect('/dashboard');
         } else {
             res.send('Wrong password');
         }
@@ -108,33 +120,38 @@ app.post('/login', async (req, res) => {
 // Route to render profile
 app.get('/profile', (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/login'); // Redirect to login if not logged in
+        return res.redirect('/login');
     }
 
-    // Fetch user data including QR code path
     const user = req.session.user;
     res.render('profile', { user: user });
 });
 
 // Add Waiter Form
 app.get('/add-waiter', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
     res.render('add-waiter');
 });
 
 // Handle Waiter Addition
 app.post('/add-waiter', upload.single('image'), async (req, res) => {
     const { name, upiId } = req.body;
-    const image = req.file ? req.file.filename : null; // Check if an image is uploaded
+    const image = req.file ? req.file.filename : null;
 
     try {
         if (!name || !upiId || !image) {
-            throw new Error('All fields are required.'); // Throw error if any field is missing
+            throw new Error('All fields are required.');
         }
+
+        const currentUser = req.session.user;
 
         await Waiter.create({
             name,
             upiId,
             image,
+            addedBy: currentUser._id
         });
 
         res.redirect('/view-waiters');
@@ -144,10 +161,14 @@ app.post('/add-waiter', upload.single('image'), async (req, res) => {
     }
 });
 
-// View Waiters
+// View Waiters for logged-in user
 app.get('/view-waiters', async (req, res) => {
     try {
-        const waiters = await Waiter.find();
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
+        const waiters = await Waiter.find({ addedBy: req.session.user._id });
         res.render('view-waiters', { waiters: waiters });
     } catch (err) {
         console.error('Error fetching waiters:', err);
@@ -155,8 +176,71 @@ app.get('/view-waiters', async (req, res) => {
     }
 });
 
+// Route to fetch waiters associated with a specific restaurant owner
+app.get('/waiters', async (req, res) => {
+    try {
+        const ownerId = req.query.ownerId;
+        const waiters = await Waiter.find({ addedBy: ownerId });
+        res.render('waiters', { waiters: waiters });
+    } catch (err) {
+        console.error('Error fetching waiters:', err);
+        res.status(500).send('Failed to fetch waiters.');
+    }
+});
+
+// Handle waiter update
+app.put('/edit-waiter/:id', upload.single('image'), async (req, res) => {
+    try {
+        const waiterId = req.params.id;
+        const { name, upiId } = req.body;
+        const image = req.file ? req.file.filename : null;
+
+        const updatedWaiter = {
+            name,
+            upiId
+        };
+
+        if (image) {
+            updatedWaiter.image = image;
+        }
+
+        await Waiter.findByIdAndUpdate(waiterId, updatedWaiter);
+
+        res.status(200).send('Waiter updated successfully');
+    } catch (err) {
+        console.error('Error updating waiter:', err);
+        res.status(500).send('Failed to update waiter.');
+    }
+});
+
+// Handle waiter deletion
+app.delete('/delete-waiter/:id', async (req, res) => {
+    try {
+        const waiterId = req.params.id;
+        await Waiter.findByIdAndDelete(waiterId);
+        res.status(200).send('Waiter deleted successfully');
+    } catch (err) {
+        console.error('Error deleting waiter:', err);
+        res.status(500).send('Failed to delete waiter.');
+    }
+});
+
+// Logout user
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).send('Failed to logout');
+        }
+        res.redirect('/login');
+    });
+});
+
 // Route to render dashboard
 app.get('/dashboard', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
     res.render('dashboard');
 });
 
@@ -165,16 +249,6 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
-
-app.get("/waiters", async (req, res) => {
-    try {
-        const waiters = await Waiter.find();
-        res.render("waiters", { waiters: waiters });
-    } catch (error) {
-        res.status(500).send("Error fetching waiters");
-    }
-});
-
 
 const port = 5000;
 app.listen(port, () => {

@@ -1,0 +1,10 @@
+# Node.js
+node_modules
+npm-debug.log
+.env
+
+# Build folder for React
+build
+
+# Mac OS specific
+.DS_Store

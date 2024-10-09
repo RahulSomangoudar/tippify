@@ -8,18 +8,23 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #f5af19, #f12711);
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 0;
             padding: 20px;
             color: #fff;
+            background: url('https://t3.ftcdn.net/jpg/03/44/52/88/360_F_344528805_o1LwyPDkkDZ7TEbTE5J08e9m00ZifmGK.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
             margin-bottom: 20px;
             text-align: center;
+            color: #333;
         }
 
         .container {
@@ -30,7 +35,7 @@
         }
 
         .card {
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            background: rgb(220, 199, 255);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -40,20 +45,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 180px;
+            height: 290px;
+        }
+
+        .card:hover::before {
+            left: 150%;
         }
 
         .card img {
             border-radius: 10px;
-            width: 100px;
-            height: 100px;
+            width: 180px;
+            height: 200px;
             object-fit: cover;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
+            transition: transform 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #ACB6E5, #74ebd5);
+        .card:hover img {
+            transform: scale(1.1);
         }
 
         .card h2 {
@@ -61,7 +73,7 @@
         }
 
         .payment-button {
-            background-color: #4CAF50;
+            background-color: rgb(162, 104, 255);
             color: white;
             padding: 10px 15px;
             border: none;
@@ -72,7 +84,7 @@
         }
 
         .payment-button:hover {
-            background-color: #45a049;
+            background-color: rgb(110, 46, 213);
             transform: scale(1.05);
         }
 
@@ -97,7 +109,6 @@
             <div class="card">
                 <img src="/uploads/<%= waiter.image %>" alt="<%= waiter.name %>">
                 <h2><%= waiter.name %></h2>
-                <p>UPI ID: <%= waiter.upiId %></p>
                 <button class="payment-button" data-upi="<%= waiter.upiId %>">Pay Now</button>
             </div>
         <% }); %>

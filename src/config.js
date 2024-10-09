@@ -20,6 +20,9 @@ const LoginSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    qrCodePath: {
+        type: String
     }
 });
 
@@ -38,8 +41,14 @@ const waiterSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    addedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
     }
 });
+
+
 
 const Waiter = mongoose.model('waiters', waiterSchema);
 
